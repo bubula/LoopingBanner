@@ -27,8 +27,8 @@ import com.ToxicBakery.viewpager.transforms.StackTransformer;
 import com.ToxicBakery.viewpager.transforms.ZoomInTransformer;
 import com.ToxicBakery.viewpager.transforms.ZoomOutTranformer;
 import com.bubu.loopingbanner.LoopingBanner;
-import com.bubu.loopingbanner.indicator.DefaultLBIndicator;
 import com.bubu.loopingbanner.OnItemClickListener;
+import com.bubu.loopingbanner.indicator.DefaultLBIndicator;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         init();
     }
 
+    @SuppressWarnings("unchecked")
     private void initViews() {
         loopingBanner = (LoopingBanner) findViewById(R.id.convenientBanner);
         listView = (ListView) findViewById(R.id.listView);
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         listView.setOnItemClickListener(this);
     }
 
+    @SuppressWarnings("unchecked")
     private void init() {
         initImageLoader();
         loadTestDatas();
@@ -79,10 +81,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         networkImages = Arrays.asList(images);
         loopingBanner.setLBPageView(new NetworkImageLBViewPageAdapterViewHolderView())
                 .setLBIndicatorView(DefaultLBIndicator.getInstance(this, R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused))
+                .setLBDefaultIndicatorIconRes(R.mipmap.ic_page_indicator_focused, R.mipmap.ic_page_indicator)
                 .setOnItemClickListener(this).setLBCanLoop(false);
         loopingBanner.setLBPageData(networkImages);
-
-
     }
 
     //初始化网络图片缓存库

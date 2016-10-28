@@ -34,7 +34,7 @@ public class LoopingBanner<T> extends FrameLayout {
     private LBViewPageAdapter lbViewPageAdapter;//viewPager适配器
     private LBViewPager lbViewPager;//显示内容
     private LBViewPagerScroller lbViewPagerScroller;//ViewPager滚动
-    private LBIndicatorView lbIndicatorView;//指示器View
+    private LBIndicatorView mLbIndicatorView;//指示器View
     private LBViewPageAdapterViewHolder lbPageAdapterViewHolder;//内容显示View
     private long autoTurningTime;//翻转间隔
     private boolean turning;//是否自动翻转
@@ -106,20 +106,15 @@ public class LoopingBanner<T> extends FrameLayout {
      * @return
      */
     public LoopingBanner setLBIndicatorView(LBIndicatorView lbIndicatorView) {
-        this.lbIndicatorView = lbIndicatorView;
+        if (mLbIndicatorView != null) {
+            removeView(mLbIndicatorView.getView());
+        }
+        this.mLbIndicatorView = lbIndicatorView;
         addView(lbIndicatorView.getView());
         lbIndicatorView.notifyDataSetChanged(lbViewPageAdapter.getRealCount(), lbViewPager.getRealItem());
         return this;
     }
 
-    /**
-     * 获取示器View
-     *
-     * @return
-     */
-    public LBIndicatorView getLbIndicatorView() {
-        return lbIndicatorView;
-    }
 
     /**
      * 设置显示内容ViewHolder
@@ -133,24 +128,17 @@ public class LoopingBanner<T> extends FrameLayout {
         return this;
     }
 
-    /**
-     * 获取显示内容ViewHolder
-     *
-     * @return lbPageAdapterViewHolder
-     */
-    public LBViewPageAdapterViewHolder getLbPageAdapterView() {
-        return lbPageAdapterViewHolder;
-    }
 
     /**
      * 设置显示内容
      */
+    @SuppressWarnings("unchecked")
     public LoopingBanner setLBPageData(List<T> data) {
         this.mData = data;
         lbViewPageAdapter.setData(mData);
         lbViewPageAdapter.notifyDataSetChanged();
-        if (lbIndicatorView != null) {
-            lbIndicatorView.notifyDataSetChanged(lbViewPageAdapter.getRealCount(), lbViewPager.getRealItem());
+        if (mLbIndicatorView != null) {
+            mLbIndicatorView.notifyDataSetChanged(lbViewPageAdapter.getRealCount(), lbViewPager.getRealItem());
         }
         return this;
     }
@@ -162,7 +150,7 @@ public class LoopingBanner<T> extends FrameLayout {
      * @param indicatorFocused
      * @return
      */
-    public LoopingBanner setDefalIndicatorIconRes(int indicatorDefault, int indicatorFocused) {
+    public LoopingBanner setLBDefaultIndicatorIconRes(int indicatorDefault, int indicatorFocused) {
         setLBIndicatorView(DefaultLBIndicator.getInstance(mContext, indicatorDefault, indicatorFocused));
         return this;
     }
@@ -184,8 +172,8 @@ public class LoopingBanner<T> extends FrameLayout {
      * @param visible
      */
     public LoopingBanner setLBIndicatorVisible(boolean visible) {
-        if (lbIndicatorView != null) {
-            lbIndicatorView.getView().setVisibility(visible ? View.VISIBLE : View.GONE);
+        if (mLbIndicatorView != null) {
+            mLbIndicatorView.getView().setVisibility(visible ? View.VISIBLE : View.GONE);
         }
 
         return this;
@@ -376,8 +364,8 @@ public class LoopingBanner<T> extends FrameLayout {
             if (onPageChangeListener != null) {
                 onPageChangeListener.onPageSelected(position);
             }
-            if (lbIndicatorView != null) {
-                lbIndicatorView.PageTurningChange(position);
+            if (mLbIndicatorView != null) {
+                mLbIndicatorView.PageTurningChange(position);
             }
         }
 
